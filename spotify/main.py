@@ -1,11 +1,32 @@
-from pyspark.sql import SparkSession
+from typing import Dict, List, Tuple
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql import functions as F
+from pyspark.sql.types import StructType
 
-spark = SparkSession.builder.appName("spotify-test").getOrCreate()
+def create_spark_session(app_name: str = "SpotifyDataProcessing") -> SparkSession:
+    """Create and return a Spark session."""
+    spark = (
+        SparkSession.builder
+        .appName(app_name)
+        .master("local[*]")
+        .config("spark.sql.shuffle.partitions", "4")
+        .config("spark.executor.memory", "2g")
+        .getOrCreate()
+    )
 
-df = spark.range(0, 5).withColumnRenamed("id", "n")
-df.show()
+    print(f"Spark session created: {app_name}")
 
-#df.write.mode("overwrite").parquet("out/parquet_demo")
-print("✅ Zapisano plik Parquet do folderu 'out/parquet_demo'")
+    return spark
 
-spark.stop()
+def load_data(spark: SparkSession, file_path : str) -> DataFrame:
+    """Load data from a CSV file into a Spark DataFrame."""
+    df = (
+        spark.read.format("csv")
+        .option("header", "true")
+        .option("inferSchema", "true")
+        .load(file_path)
+    )
+
+    print(f"Data loaded from {file_path}")
+
+    return df
