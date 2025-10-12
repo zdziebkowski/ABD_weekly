@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Conda
+.env
+.conda/
+conda-meta/
+pkgs/
+
+# Spark / dane wyjściowe
+out/
+.spark-tmp/
+*.crc
+
+# System
+.DS_Store
+Thumbs.db
