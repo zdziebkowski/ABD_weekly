@@ -59,7 +59,7 @@ def average_response_time(logs:list) -> float:
     
     return average_time
 
-def mocst_common_ip(logs: list) -> str:
+def most_common_ip(logs: list) -> str:
     ip_count = {}
 
     for log in logs:
@@ -87,23 +87,34 @@ def status_distribution(logs: list) -> dict:
     
     return status_count
 
-if __name__ == "__main__":
-    logs = parse_logs()
+def generate_report(logs: list) -> str:
     total_logs = count_logs(logs)
     total_errors = count_errors(logs)
-    top_5_endpoints = top_endpoints(logs, 5)
-    average_time = average_response_time(logs)
-    most_common_ip = mocst_common_ip(logs)
-    distribution_of_status = status_distribution(logs)
+    top_5 = top_endpoints(logs, 5)
+    avg_time = average_response_time(logs)
+    top_ip = most_common_ip(logs)
+    status_dist = status_distribution(logs)
 
-    print(f"Statystyki:")
-    print(f"Wszystkich żądań: {total_logs}")
-    print(f"Żądań z błędem: {total_errors}")
-    print(f"\nTop 5 endpointów:")
-    for endpoint, count in top_5_endpoints:
-        print(f"  {endpoint}: {count} razy")
-    print(f"\nŚredni czas odpowiedzi: {average_time:.2f} ms")
-    print(f"Najczęściej występujące IP: {most_common_ip}")
-    print(f"\nRozkład statusów:")
-    for status, count in distribution_of_status.items():
-        print(f"  {status}: {count} razy")
+    report = "Log Report"
+    report += "=" *50 + "\n\n"
+    report += f"Total log entries: {total_logs}\n"
+    report += f"Total error entries: {total_errors}\n\n"
+    report += "Top 5 Endpoints:\n"
+    for endpoint, count in top_5:
+        report += f"  {endpoint}: {count} hits\n"
+    report += f"\nAverage Response Time: {avg_time:.2f} ms\n"
+    report += f"Most Common IP: {top_ip}\n\n"
+    report += "Status Code Distribution:\n"
+    for status, count in status_dist.items():
+        report += f"  {status}: {count} occurrences\n"
+    
+    return report
+
+if __name__ == "__main__":
+    logs = parse_logs()
+    report = generate_report(logs)
+
+    print(report)
+
+    with open('output/report.txt', 'w', encoding='utf-8') as report_file:
+        report_file.write(report)
