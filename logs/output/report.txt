@@ -1,0 +1,22 @@
+Log Report
+==================================================
+
+Total log entries: 2000
+Total error entries: 740
+
+Top 5 Endpoints:
+  /api/v1/orders: 364 hits
+  /api/v1/users: 339 hits
+  /api/v1/products: 337 hits
+  /api/v1/logout: 321 hits
+  /api/v1/data: 321 hits
+
+Average Response Time: 784.82 ms
+Most Common IP: 192.168.1.27
+
+Status Code Distribution:
+  200: 996 occurrences
+  404: 239 occurrences
+  403: 241 occurrences
+  500: 260 occurrences
+  201: 264 occurrences
